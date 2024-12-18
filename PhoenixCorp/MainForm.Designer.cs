@@ -93,7 +93,7 @@
             this.rtbDatabaseInformation.Location = new System.Drawing.Point(12, 27);
             this.rtbDatabaseInformation.Name = "rtbDatabaseInformation";
             this.rtbDatabaseInformation.ReadOnly = true;
-            this.rtbDatabaseInformation.Size = new System.Drawing.Size(350, 447);
+            this.rtbDatabaseInformation.Size = new System.Drawing.Size(360, 447);
             this.rtbDatabaseInformation.TabIndex = 0;
             this.rtbDatabaseInformation.Text = "";
             // 
