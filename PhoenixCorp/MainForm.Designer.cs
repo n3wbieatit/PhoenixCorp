@@ -73,6 +73,7 @@
             this.btnWorstPeriod = new System.Windows.Forms.Button();
             this.btnMinProfit = new System.Windows.Forms.Button();
             this.openFileDialog = new System.Windows.Forms.OpenFileDialog();
+            this.saveFileDialog = new System.Windows.Forms.SaveFileDialog();
             this.gbAddParams.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numUDAddProfit)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numUDAddMonth)).BeginInit();
@@ -129,13 +130,14 @@
             this.btnAddRecord.TabIndex = 12;
             this.btnAddRecord.Text = "Добавить запись";
             this.btnAddRecord.UseVisualStyleBackColor = true;
+            this.btnAddRecord.Click += new System.EventHandler(this.btnAddRecord_Click);
             // 
             // numUDAddProfit
             // 
             this.numUDAddProfit.Location = new System.Drawing.Point(69, 178);
             this.numUDAddProfit.Maximum = new decimal(new int[] {
-            999999999,
-            0,
+            1215752191,
+            23,
             0,
             0});
             this.numUDAddProfit.Name = "numUDAddProfit";
@@ -306,6 +308,7 @@
             this.btnChangeRecord.TabIndex = 19;
             this.btnChangeRecord.Text = "Изменить запись";
             this.btnChangeRecord.UseVisualStyleBackColor = true;
+            this.btnChangeRecord.Click += new System.EventHandler(this.btnChangeRecord_Click);
             // 
             // tbChangeDepName
             // 
@@ -318,8 +321,8 @@
             // 
             this.numUDChangeProfit.Location = new System.Drawing.Point(72, 173);
             this.numUDChangeProfit.Maximum = new decimal(new int[] {
-            999999999,
-            0,
+            1215752191,
+            23,
             0,
             0});
             this.numUDChangeProfit.Name = "numUDChangeProfit";
@@ -342,6 +345,7 @@
             this.tbChangeID.Name = "tbChangeID";
             this.tbChangeID.Size = new System.Drawing.Size(189, 26);
             this.tbChangeID.TabIndex = 3;
+            this.tbChangeID.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.tbChangeID_KeyPress);
             // 
             // numUDChangeMonth
             // 
@@ -481,6 +485,7 @@
             this.btnRemoveRecord.TabIndex = 20;
             this.btnRemoveRecord.Text = "Удалить запись";
             this.btnRemoveRecord.UseVisualStyleBackColor = true;
+            this.btnRemoveRecord.Click += new System.EventHandler(this.btnRemoveRecord_Click);
             // 
             // tbRemoveID
             // 
@@ -489,6 +494,7 @@
             this.tbRemoveID.Name = "tbRemoveID";
             this.tbRemoveID.Size = new System.Drawing.Size(189, 26);
             this.tbRemoveID.TabIndex = 3;
+            this.tbRemoveID.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.tbRemoveID_KeyPress);
             // 
             // rbRemoveID
             // 
@@ -561,12 +567,14 @@
             this.toolFileOpen.Name = "toolFileOpen";
             this.toolFileOpen.Size = new System.Drawing.Size(191, 24);
             this.toolFileOpen.Text = "Открыть файл";
+            this.toolFileOpen.Click += new System.EventHandler(this.toolFileOpen_Click);
             // 
             // toolFileSave
             // 
             this.toolFileSave.Name = "toolFileSave";
             this.toolFileSave.Size = new System.Drawing.Size(191, 24);
             this.toolFileSave.Text = "Сохранить файл";
+            this.toolFileSave.Click += new System.EventHandler(this.toolFileSave_Click);
             // 
             // toolAbout
             // 
@@ -574,6 +582,7 @@
             this.toolAbout.Name = "toolAbout";
             this.toolAbout.Size = new System.Drawing.Size(116, 24);
             this.toolAbout.Text = "О программе";
+            this.toolAbout.Click += new System.EventHandler(this.toolAbout_Click);
             // 
             // btnMostProfit
             // 
@@ -584,6 +593,7 @@
             this.btnMostProfit.TabIndex = 22;
             this.btnMostProfit.Text = "Определить самые прибыльные годы подразделений";
             this.btnMostProfit.UseVisualStyleBackColor = true;
+            this.btnMostProfit.Click += new System.EventHandler(this.btnMostProfit_Click);
             // 
             // btnWorstPeriod
             // 
@@ -595,6 +605,7 @@
             this.btnWorstPeriod.Text = "Определить наиболее длинный период каждого подразделения с доходом ниже среднего " +
     "по всей фирме";
             this.btnWorstPeriod.UseVisualStyleBackColor = true;
+            this.btnWorstPeriod.Click += new System.EventHandler(this.btnWorstPeriod_Click);
             // 
             // btnMinProfit
             // 
@@ -603,8 +614,9 @@
             this.btnMinProfit.Name = "btnMinProfit";
             this.btnMinProfit.Size = new System.Drawing.Size(288, 49);
             this.btnMinProfit.TabIndex = 24;
-            this.btnMinProfit.Text = "Определить минимальный доход подразделений";
+            this.btnMinProfit.Text = "Определить год с минимальным доходом подразделений";
             this.btnMinProfit.UseVisualStyleBackColor = true;
+            this.btnMinProfit.Click += new System.EventHandler(this.btnMinProfit_Click);
             // 
             // openFileDialog
             // 
@@ -806,7 +818,12 @@
         private System.Windows.Forms.Button btnWorstPeriod;
         // Определить минимальный доход подразделений
         private System.Windows.Forms.Button btnMinProfit;
+
+        // Диалоговое окно открытия файла
         private System.Windows.Forms.OpenFileDialog openFileDialog;
+
+        // Диалоговое окно сохранения файла
+        private System.Windows.Forms.SaveFileDialog saveFileDialog;
     }
 }
 

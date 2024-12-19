@@ -29,23 +29,23 @@
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormEx));
-            this.richTextBox1 = new System.Windows.Forms.RichTextBox();
+            this.rtbEx = new System.Windows.Forms.RichTextBox();
             this.SuspendLayout();
             // 
-            // richTextBox1
+            // rtbEx
             // 
-            this.richTextBox1.Location = new System.Drawing.Point(13, 13);
-            this.richTextBox1.Name = "richTextBox1";
-            this.richTextBox1.Size = new System.Drawing.Size(481, 325);
-            this.richTextBox1.TabIndex = 0;
-            this.richTextBox1.Text = "";
+            this.rtbEx.Location = new System.Drawing.Point(13, 13);
+            this.rtbEx.Name = "rtbEx";
+            this.rtbEx.Size = new System.Drawing.Size(481, 325);
+            this.rtbEx.TabIndex = 0;
+            this.rtbEx.Text = "";
             // 
             // FormEx
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(506, 350);
-            this.Controls.Add(this.richTextBox1);
+            this.Controls.Add(this.rtbEx);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "FormEx";
             this.Text = "FormEx";
@@ -55,6 +55,7 @@
 
         #endregion
 
-        private System.Windows.Forms.RichTextBox richTextBox1;
+        // Поле для вывода результата задач
+        private System.Windows.Forms.RichTextBox rtbEx;
     }
 }
