@@ -72,6 +72,7 @@
             this.btnMostProfit = new System.Windows.Forms.Button();
             this.btnWorstPeriod = new System.Windows.Forms.Button();
             this.btnMinProfit = new System.Windows.Forms.Button();
+            this.openFileDialog = new System.Windows.Forms.OpenFileDialog();
             this.gbAddParams.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numUDAddProfit)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numUDAddMonth)).BeginInit();
@@ -605,6 +606,10 @@
             this.btnMinProfit.Text = "Определить минимальный доход подразделений";
             this.btnMinProfit.UseVisualStyleBackColor = true;
             // 
+            // openFileDialog
+            // 
+            this.openFileDialog.FileName = "openFileDialog";
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -801,6 +806,7 @@
         private System.Windows.Forms.Button btnWorstPeriod;
         // Определить минимальный доход подразделений
         private System.Windows.Forms.Button btnMinProfit;
+        private System.Windows.Forms.OpenFileDialog openFileDialog;
     }
 }
 

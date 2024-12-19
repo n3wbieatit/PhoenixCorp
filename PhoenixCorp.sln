@@ -1,9 +1,11 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
-VisualStudioVersion = 17.12.35521.163 d17.12
+VisualStudioVersion = 17.12.35521.163
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PhoenixCorp", "PhoenixCorp\PhoenixCorp.csproj", "{E9F6B17D-F24B-483C-8F90-50B9C73A89EA}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PhoenixLibrary", "PhoenixLibrary\PhoenixLibrary.csproj", "{16BEFCD6-A821-4C96-840E-4C100C6D537F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +17,10 @@ Global
 		{E9F6B17D-F24B-483C-8F90-50B9C73A89EA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E9F6B17D-F24B-483C-8F90-50B9C73A89EA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E9F6B17D-F24B-483C-8F90-50B9C73A89EA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{16BEFCD6-A821-4C96-840E-4C100C6D537F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{16BEFCD6-A821-4C96-840E-4C100C6D537F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{16BEFCD6-A821-4C96-840E-4C100C6D537F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{16BEFCD6-A821-4C96-840E-4C100C6D537F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

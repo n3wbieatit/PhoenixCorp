@@ -5,10 +5,11 @@ using System.Runtime.InteropServices.WindowsRuntime;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace PhoenixCorp
+namespace PhoenixLibrary
 {
     [Serializable]
-    public class Department
+    // Класс записи о данных подразделения
+    public class Record
     {
         #region Поля
 
@@ -87,7 +88,7 @@ namespace PhoenixCorp
         /// <param name="year">Год</param>
         /// <param name="month">Месяц</param>
         /// <param name="profit">Доход</param>
-        public Department(string name, int year, int month, double profit)
+        public Record(string name, int year, int month, double profit)
         {
             this.name = name;
             this.year = year;
@@ -106,6 +107,21 @@ namespace PhoenixCorp
         {
             DateTime m = DateTime.Now;
             return (ulong)m.Ticks/1000000000;
+        }
+
+        /// <summary>
+        /// Метод проверки на наличие записи
+        /// </summary>
+        /// <param name="records">Коллекция записей</param>
+        /// <returns>True or False</returns>
+        public bool IsExist(List<Record> records)
+        {
+            foreach (var rec in records)
+            {
+                if (rec.Name == this.Name && rec.Year == this.Year && rec.Month == this.Month)
+                    return true;
+            }
+            return false;
         }
 
         #endregion

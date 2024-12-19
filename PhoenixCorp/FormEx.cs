@@ -7,20 +7,21 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using PhoenixLibrary;
 
 namespace PhoenixCorp
 {
-    public partial class MainForm : Form
+    public partial class FormEx : Form
     {
-        Functions functions = new Functions();
-        public MainForm()
+        public FormEx()
         {
             InitializeComponent();
-            if (functions.CreateFile())
-                MessageBox.Show("File is created");
-            else
-                MessageBox.Show("File is existed");
+        }
+
+        // TODO: доработать конструктор
+        public FormEx(string title)
+        {
+            InitializeComponent();
+            this.Text = title;
         }
     }
 }
