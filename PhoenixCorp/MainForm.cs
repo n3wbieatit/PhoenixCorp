@@ -39,17 +39,18 @@ namespace PhoenixCorp
         /// <param name="records">Коллекция записей</param>
         private void ShowInfo(List<Record> records)
         {
-            if (path == "")
+            if (path == "" && records.Count == 0)
                 rtbDatabaseInformation.Text = "ФАЙЛ НЕ ОТКРЫТ";
-            else
+            else if (path != "" && records.Count > 0)
                 rtbDatabaseInformation.Text = "ОТКРЫТА БАЗА ДАННЫХ: " + path;
-
-            rtbDatabaseInformation.AppendText("\n********************************************************************\n");
-            if (records.Count == 0)
+            else
             {
                 rtbDatabaseInformation.AppendText("Нет записей!");
                 return;
             }
+
+            rtbDatabaseInformation.AppendText("\n*****************************************\n");
+
             int i = 1;
             foreach (var rec in records)
             {
@@ -61,7 +62,7 @@ namespace PhoenixCorp
                     rtbDatabaseInformation.AppendText($"ГОД: {rec.Year}\n");
                     rtbDatabaseInformation.AppendText($"МЕСЯЦ: {rec.Month}\n");
                     rtbDatabaseInformation.AppendText($"ДОХОД: {rec.Profit}\n");
-                    rtbDatabaseInformation.AppendText("-----------------------------------------------------------------------------------\n");
+                    rtbDatabaseInformation.AppendText("--------------------------------------------------------\n");
                 }
             }
         }
@@ -84,7 +85,7 @@ namespace PhoenixCorp
                 (int)numUDAddMonth.Value, (double)numUDAddProfit.Value);
 
             if (records.Exists(rec => rec.Name == tempRecord.Name &&
-                rec.Year == tempRecord.Year && rec.Month == tempRecord.Month))
+                rec.Year == tempRecord.Year && rec.Month == tempRecord.Month && !rec.IsDeleted))
             {
                 MessageBox.Show("Данная запись уже существует!", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
@@ -96,7 +97,7 @@ namespace PhoenixCorp
             }
             else if (rbAddLast.Checked)
             {
-                functions.AddRecord(records.Count - 1, ref records, tempRecord, path);
+                functions.AddRecord(records.Count, ref records, tempRecord, path);
             }
             else if (rbAddNumRec.Checked)
             {
@@ -106,7 +107,7 @@ namespace PhoenixCorp
                         MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     return;
                 }
-                functions.AddRecord((int)numUDAddNumRec.Value - 1, ref records, tempRecord, path);
+                functions.AddRecord((int)numUDAddNumRec.Value, ref records, tempRecord, path);
             }
             ShowInfo(records);
         }
@@ -136,7 +137,7 @@ namespace PhoenixCorp
                         MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     return;
                 }
-                int index = (int)numUDChangeNumRec.Value - 1;
+                int index = (int)numUDChangeNumRec.Value;
                 functions.ChangeRecord(index, ref records, path, tempRecord);
             }
             else if (rbChangeID.Checked)
@@ -178,8 +179,9 @@ namespace PhoenixCorp
                         MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     return;
                 }
-                int index = (int)numUDRemoveNumRec.Value - 1;
+                int index = (int)numUDRemoveNumRec.Value;
                 functions.RemoveRecord(index, ref records);
+                functions.WriteRecord(records, path);
             }
             else if (rbRemoveID.Checked)
             {
@@ -187,6 +189,7 @@ namespace PhoenixCorp
                 {
                     int index = records.FindIndex(rec => rec.ID == ulong.Parse(tbChangeID.Text));
                     functions.RemoveRecord(index, ref records);
+                    functions.WriteRecord(records, path);
                 }
                 else
                 {
@@ -318,6 +321,51 @@ namespace PhoenixCorp
         {
             if (e.KeyChar >= '0' && e.KeyChar <= '9' || e.KeyChar.Equals((char)8)) return;
             e.Handled = true;
+        }
+
+        #endregion
+
+        #region События выбора радиокнопок
+
+        private void rbAddFirst_CheckedChanged(object sender, EventArgs e)
+        {
+            numUDAddNumRec.Enabled = false;
+        }
+
+        private void rbAddNumRec_CheckedChanged(object sender, EventArgs e)
+        {
+            numUDAddNumRec.Enabled = true;
+        }
+
+        private void rbAddLast_CheckedChanged(object sender, EventArgs e)
+        {
+            numUDAddNumRec.Enabled = false;
+        }
+
+
+        private void rbChangeNumRec_CheckedChanged(object sender, EventArgs e)
+        {
+            tbChangeID.Enabled = false;
+            numUDChangeNumRec.Enabled = true;
+        }
+
+        private void rbChangeID_CheckedChanged(object sender, EventArgs e)
+        {
+            tbChangeID.Enabled = true;
+            numUDChangeNumRec.Enabled = false;
+        }
+
+
+        private void rbRemoveNumRec_CheckedChanged(object sender, EventArgs e)
+        {
+            numUDRemoveNumRec.Enabled = true;
+            tbRemoveID.Enabled = false;
+        }
+
+        private void rbRemoveID_CheckedChanged(object sender, EventArgs e)
+        {
+            numUDRemoveNumRec.Enabled = false;
+            tbRemoveID.Enabled = true;
         }
 
         #endregion

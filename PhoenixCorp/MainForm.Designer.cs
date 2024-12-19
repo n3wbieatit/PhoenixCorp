@@ -254,6 +254,7 @@
             this.rbAddNumRec.TabIndex = 2;
             this.rbAddNumRec.Text = "По заданному номеру:";
             this.rbAddNumRec.UseVisualStyleBackColor = true;
+            this.rbAddNumRec.CheckedChanged += new System.EventHandler(this.rbAddNumRec_CheckedChanged);
             // 
             // rbAddLast
             // 
@@ -264,6 +265,7 @@
             this.rbAddLast.TabIndex = 1;
             this.rbAddLast.Text = "В конец";
             this.rbAddLast.UseVisualStyleBackColor = true;
+            this.rbAddLast.CheckedChanged += new System.EventHandler(this.rbAddLast_CheckedChanged);
             // 
             // rbAddFirst
             // 
@@ -276,6 +278,7 @@
             this.rbAddFirst.TabStop = true;
             this.rbAddFirst.Text = "В начало";
             this.rbAddFirst.UseVisualStyleBackColor = true;
+            this.rbAddFirst.CheckedChanged += new System.EventHandler(this.rbAddFirst_CheckedChanged);
             // 
             // gbChangeParams
             // 
@@ -396,6 +399,7 @@
             this.rbChangeID.TabIndex = 2;
             this.rbChangeID.Text = "По ID:";
             this.rbChangeID.UseVisualStyleBackColor = true;
+            this.rbChangeID.CheckedChanged += new System.EventHandler(this.rbChangeID_CheckedChanged);
             // 
             // numUDChangeYear
             // 
@@ -461,6 +465,7 @@
             this.rbChangeNumRec.TabStop = true;
             this.rbChangeNumRec.Text = "По номеру записи:";
             this.rbChangeNumRec.UseVisualStyleBackColor = true;
+            this.rbChangeNumRec.CheckedChanged += new System.EventHandler(this.rbChangeNumRec_CheckedChanged);
             // 
             // gbRemoveParams
             // 
@@ -505,6 +510,7 @@
             this.rbRemoveID.TabIndex = 2;
             this.rbRemoveID.Text = "По ID:";
             this.rbRemoveID.UseVisualStyleBackColor = true;
+            this.rbRemoveID.CheckedChanged += new System.EventHandler(this.rbRemoveID_CheckedChanged);
             // 
             // numUDRemoveNumRec
             // 
@@ -539,6 +545,7 @@
             this.rbRemoveNumRec.TabStop = true;
             this.rbRemoveNumRec.Text = "По номеру записи:";
             this.rbRemoveNumRec.UseVisualStyleBackColor = true;
+            this.rbRemoveNumRec.CheckedChanged += new System.EventHandler(this.rbRemoveNumRec_CheckedChanged);
             // 
             // menuStripFile
             // 

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net.Mail;
+using System.Runtime.Serialization;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Text;
 using System.Threading.Tasks;
@@ -19,8 +20,19 @@ namespace PhoenixLibrary
         /// </summary>
         public string CreateDefaultFile()
         {
-            if (!File.Exists(defaultPath))
-                defaultPath = File.Create(defaultPath).Name;
+            try
+            {
+                using (FileStream fstream = new FileStream(defaultPath, FileMode.CreateNew))
+                {
+                    FileInfo info = new FileInfo(defaultPath);
+                    defaultPath = info.FullName;
+                }
+            }
+            catch (IOException)
+            {
+                FileInfo info = new FileInfo(defaultPath);
+                defaultPath = info.FullName;
+            }
             return defaultPath;
         }
 
@@ -36,7 +48,14 @@ namespace PhoenixLibrary
                 using (FileStream fstream = new FileStream(path, FileMode.Open))
                 {
                     BinaryFormatter binary = new BinaryFormatter();
-                    return binary.Deserialize(fstream) as List<Record>;
+                    try
+                    {
+                        return binary.Deserialize(fstream) as List<Record>;
+                    }
+                    catch (SerializationException)
+                    {
+                        return new List<Record>(0);
+                    }
                 }
             }
             catch (FileNotFoundException)
@@ -133,7 +152,11 @@ namespace PhoenixLibrary
             }
             catch (FileNotFoundException)
             {
-                File.Create("removeTemp.bin");
+                using (FileStream fstream = new FileStream("removeTemp.bin", FileMode.CreateNew))
+                {
+                    BinaryFormatter binary = new BinaryFormatter();
+                    binary.Serialize(fstream, tempRecords);
+                }
             }
             // Запись удаленных данных в файл
             try
@@ -182,7 +205,7 @@ namespace PhoenixLibrary
                 temp.Profit = 0;
                 foreach (var item in records)
                 {
-                    if (temp.Name == item.Name && temp.Year == item.Year)
+                    if (temp.Name == item.Name && temp.Year == item.Year && !temp.IsDeleted && !item.IsDeleted)
                         temp.Profit += item.Profit;
                 }
                 if (!allYears.Contains(temp))
@@ -231,7 +254,7 @@ namespace PhoenixLibrary
                 temp.Profit = 0;
                 foreach (var item in records)
                 {
-                    if (temp.Name == item.Name && temp.Year == item.Year)
+                    if (temp.Name == item.Name && temp.Year == item.Year && !temp.IsDeleted && !item.IsDeleted)
                         temp.Profit += item.Profit;
                 }
                 if (!allYears.Contains(temp))
@@ -326,7 +349,7 @@ namespace PhoenixLibrary
                 if (check[i]) continue;
                 for (int j = 0; j < records.Count; j++)
                 {
-                    if (records[i].Name == records[j].Name) check[j] = true;
+                    if (records[i].Name == records[j].Name && !records[i].IsDeleted) check[j] = true;
                 }
                 Array.Resize(ref result, result.Length + 1);
                 result[result.Length - 1] = records[i].Name;
@@ -343,7 +366,8 @@ namespace PhoenixLibrary
         {
             double total = 0;
             foreach (var rec in records)
-                total += rec.Profit;
+                if (!rec.IsDeleted)
+                    total += rec.Profit;
             return total / 60;
         }
 
@@ -357,7 +381,7 @@ namespace PhoenixLibrary
         {
             double[] result = new double[60];
             foreach (var rec in records)
-                if (rec.Name == depName)
+                if (rec.Name == depName && !rec.IsDeleted)
                     result[(rec.Year - 2019) * rec.Month - 1] = rec.Profit;
             return result;
         }
