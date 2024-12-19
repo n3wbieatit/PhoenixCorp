@@ -582,7 +582,7 @@
             this.btnMostProfit.Name = "btnMostProfit";
             this.btnMostProfit.Size = new System.Drawing.Size(288, 49);
             this.btnMostProfit.TabIndex = 22;
-            this.btnMostProfit.Text = "Определить самые прибыльные года подразделений";
+            this.btnMostProfit.Text = "Определить самые прибыльные годы подразделений";
             this.btnMostProfit.UseVisualStyleBackColor = true;
             // 
             // btnWorstPeriod

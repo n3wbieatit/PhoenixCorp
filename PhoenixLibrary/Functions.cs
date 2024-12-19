@@ -208,5 +208,28 @@ namespace PhoenixLibrary
                 return false;
             }
         }
+
+        // TODO: сделать функцию
+        public Dictionary<string, string> GetMostPeriod(ref List<Record> records)
+        {
+            // Словарь: "название подразделения: год" -> доход
+            Dictionary<string, double> result = new Dictionary<string, double>();
+
+            foreach (var rec in records)
+            {
+                double sum = 0;
+                string name = rec.Name;
+                int year = rec.Year;
+                foreach (var temp in records)
+                {
+                    if (name == temp.Name && year == temp.Year)
+                        sum += temp.Profit;
+                }
+
+                if (!result.ContainsKey($"{name}: {year}"))
+                    result.Add($"{name}: {year}", sum);
+            }
+            
+        }
     }
 }

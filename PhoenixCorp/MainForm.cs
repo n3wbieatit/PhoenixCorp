@@ -14,13 +14,13 @@ namespace PhoenixCorp
     public partial class MainForm : Form
     {
         Functions functions = new Functions();
+        // Путь к файлу БД
+        string path = "";
+
         public MainForm()
         {
             InitializeComponent();
-            if (functions.CreateFile())
-                MessageBox.Show("File is created");
-            else
-                MessageBox.Show("File is existed");
+            functions.CreateDefaultFile();   
         }
     }
 }
