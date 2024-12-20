@@ -625,10 +625,6 @@
             this.btnMinProfit.UseVisualStyleBackColor = true;
             this.btnMinProfit.Click += new System.EventHandler(this.btnMinProfit_Click);
             // 
-            // openFileDialog
-            // 
-            this.openFileDialog.FileName = "openFileDialog";
-            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);

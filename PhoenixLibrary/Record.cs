@@ -25,9 +25,6 @@ namespace PhoenixLibrary
         // Доход
         private double profit;
 
-        // Статус удаления. По умолчанию: false
-        private bool isDeleted = false;
-
         #endregion
 
         #region Свойства
@@ -35,6 +32,7 @@ namespace PhoenixLibrary
         public ulong ID
         {
             get { return id; }
+            set { id = value; }
         }
 
         public string Name
@@ -71,12 +69,6 @@ namespace PhoenixLibrary
                 if (value >= 0)
                     profit = value;
             }
-        }
-
-        public bool IsDeleted
-        {
-            get { return isDeleted; }
-            set { isDeleted = value; }
         }
 
         #endregion

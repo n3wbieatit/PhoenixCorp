@@ -18,15 +18,16 @@ namespace PhoenixCorp
             InitializeComponent();
         }
 
-        public FormEx(string title, List<Record> result)
+        public FormEx(string title, string text, List<Record> result)
         {
             InitializeComponent();
             this.Text = title;
-            rtbEx.AppendText("Прибыльные года подразделений:\n");
-            rtbEx.AppendText("---------------------------------\n");
+            rtbEx.AppendText($"{text}\n");
+            rtbEx.AppendText("-------------------------------------------" +
+                "----------------------------------------------------\n");
             foreach (var rec in result)
             {
-                rtbEx.AppendText($"{rec.Name}: {rec.Year} ({rec.Profit})");
+                rtbEx.AppendText($"{rec.Name}: {rec.Year} (Доход: {rec.Profit})\n");
             }
         }
 
@@ -34,7 +35,8 @@ namespace PhoenixCorp
         {
             InitializeComponent();
             this.Text = title;
-            rtbEx.Text = $"Средний доход всей фирмы за 5 лет = {Math.Round(avg, 2)}\n---------------------------------\n";
+            rtbEx.Text = $"Средний доход всей фирмы за 5 лет = {Math.Round(avg, 2)}\n---------------------------------" +
+                $"--------------------------------------------------------------\n";
             foreach (string rec in result) rtbEx.AppendText(rec + "\n");
         }
     }

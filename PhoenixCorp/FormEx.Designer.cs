@@ -34,6 +34,7 @@
             // 
             // rtbEx
             // 
+            this.rtbEx.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.rtbEx.Location = new System.Drawing.Point(13, 13);
             this.rtbEx.Name = "rtbEx";
             this.rtbEx.Size = new System.Drawing.Size(481, 325);

@@ -90,21 +90,6 @@ namespace PhoenixLibrary
         }
 
         /// <summary>
-        /// Функция добавления последней добавленной записи во временный файл
-        /// </summary>
-        /// <param name="tempRecord">Временная запись</param>
-        private void WriteTempRecord(Record tempRecord)
-        {
-            // Запись последнего добавленного подразделения во временной файл
-            using (FileStream fstream = new FileStream("addTemp.bin", FileMode.Create))
-            {
-                BinaryFormatter binary = new BinaryFormatter();
-                // Запись в файл
-                binary.Serialize(fstream, tempRecord);
-            }
-        }
-
-        /// <summary>
         /// Функция добавления новой записи в БД
         /// </summary>
         /// <param name="index">Индекс добавления</param>
@@ -115,7 +100,6 @@ namespace PhoenixLibrary
         {
             records.Insert(index, temp);
             WriteRecord(records, path);
-            WriteTempRecord(temp);
         }
 
         /// <summary>
@@ -138,56 +122,10 @@ namespace PhoenixLibrary
         /// <param name="records">Коллекция записей</param>
         /// <returns>Значение true, если элемент temp успешно удален,
         /// в противном случае — значение false</returns>
-        public bool RemoveRecord(int index, ref List<Record> records)
+        public void RemoveRecord(int index, ref List<Record> records, string path)
         {
-            List<Record> tempRecords = new List<Record>();
-            // Получение списка удаленных файлов
-            try
-            {
-                using (FileStream fstream = new FileStream("removeTemp.bin", FileMode.Open))
-                {
-                    BinaryFormatter binary = new BinaryFormatter();
-                    tempRecords = binary.Deserialize(fstream) as List<Record>;
-                }
-            }
-            catch (FileNotFoundException)
-            {
-                using (FileStream fstream = new FileStream("removeTemp.bin", FileMode.CreateNew))
-                {
-                    BinaryFormatter binary = new BinaryFormatter();
-                    binary.Serialize(fstream, tempRecords);
-                }
-            }
-            // Запись удаленных данных в файл
-            try
-            {
-                Record temp = records[index];
-                records[index].IsDeleted = true;
-                tempRecords.Add(temp);
-                try
-                {
-                    using (FileStream fstream = new FileStream("removeTemp.bin", FileMode.CreateNew))
-                    {
-                        BinaryFormatter binary = new BinaryFormatter();
-                        // Запись в файл
-                        binary.Serialize(fstream, tempRecords);
-                    }
-                }
-                catch (IOException)
-                {
-                    using (FileStream fstream = new FileStream("removeTemp.bin", FileMode.Truncate))
-                    {
-                        BinaryFormatter binary = new BinaryFormatter();
-                        // Запись в файл
-                        binary.Serialize(fstream, tempRecords);
-                    }
-                }
-                return true;
-            }
-            catch (ArgumentOutOfRangeException)
-            {
-                return false;
-            }
+            records.RemoveAt(index);
+            WriteRecord(records, path);
         }
 
         /// <summary>
@@ -201,11 +139,11 @@ namespace PhoenixLibrary
             List<Record> allYears = new List<Record>();
             foreach (var rec in records)
             {
-                Record temp = rec;
-                temp.Profit = 0;
+                Record temp = new Record(rec.Name, rec.Year, rec.Month, 0);
+                temp.ID = rec.ID;
                 foreach (var item in records)
                 {
-                    if (temp.Name == item.Name && temp.Year == item.Year && !temp.IsDeleted && !item.IsDeleted)
+                    if (temp.Name == item.Name && temp.Year == item.Year)
                         temp.Profit += item.Profit;
                 }
                 if (!allYears.Contains(temp))
@@ -231,7 +169,10 @@ namespace PhoenixLibrary
                             if (!result.Exists(rec => rec.Name == item.Name))
                                 result.Add(item);
                             else
-                                result[result.Count - 1] = item;
+                            {
+                                if (result[result.Count - 1].Profit < item.Profit)
+                                    result[result.Count - 1] = item;
+                            }
                         }
                     }
                 }
@@ -250,11 +191,11 @@ namespace PhoenixLibrary
             List<Record> allYears = new List<Record>();
             foreach (var rec in records)
             {
-                Record temp = rec;
-                temp.Profit = 0;
+                Record temp = new Record(rec.Name, rec.Year, rec.Month, 0);
+                temp.ID = rec.ID;
                 foreach (var item in records)
                 {
-                    if (temp.Name == item.Name && temp.Year == item.Year && !temp.IsDeleted && !item.IsDeleted)
+                    if (temp.Name == item.Name && temp.Year == item.Year)
                         temp.Profit += item.Profit;
                 }
                 if (!allYears.Contains(temp))
@@ -280,7 +221,10 @@ namespace PhoenixLibrary
                             if (!result.Exists(rec => rec.Name == item.Name))
                                 result.Add(item);
                             else
-                                result[result.Count - 1] = item;
+                            {
+                                if (result[result.Count - 1].Profit > item.Profit)
+                                    result[result.Count - 1] = item;
+                            }
                         }
                     }
                 }
@@ -349,7 +293,8 @@ namespace PhoenixLibrary
                 if (check[i]) continue;
                 for (int j = 0; j < records.Count; j++)
                 {
-                    if (records[i].Name == records[j].Name && !records[i].IsDeleted) check[j] = true;
+                    if (records[i].Name == records[j].Name)
+                        check[j] = true;
                 }
                 Array.Resize(ref result, result.Length + 1);
                 result[result.Length - 1] = records[i].Name;
@@ -366,8 +311,7 @@ namespace PhoenixLibrary
         {
             double total = 0;
             foreach (var rec in records)
-                if (!rec.IsDeleted)
-                    total += rec.Profit;
+                total += rec.Profit;
             return total / 60;
         }
 
@@ -381,7 +325,7 @@ namespace PhoenixLibrary
         {
             double[] result = new double[60];
             foreach (var rec in records)
-                if (rec.Name == depName && !rec.IsDeleted)
+                if (rec.Name == depName)
                     result[(rec.Year - 2019) * rec.Month - 1] = rec.Profit;
             return result;
         }

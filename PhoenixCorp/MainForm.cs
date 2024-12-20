@@ -45,7 +45,7 @@ namespace PhoenixCorp
                 rtbDatabaseInformation.Text = "ОТКРЫТА БАЗА ДАННЫХ: " + path;
             else
             {
-                rtbDatabaseInformation.AppendText("Нет записей!");
+                rtbDatabaseInformation.AppendText("Записи отсутствуют! Пожалуйста, добавьте новую запись");
                 return;
             }
 
@@ -54,16 +54,13 @@ namespace PhoenixCorp
             int i = 1;
             foreach (var rec in records)
             {
-                if (!rec.IsDeleted)
-                {
-                    rtbDatabaseInformation.AppendText($"ЗАПИСЬ №{i++}\n");
-                    rtbDatabaseInformation.AppendText($"ID: {rec.ID}\n");
-                    rtbDatabaseInformation.AppendText($"НАЗВАНИЕ ПОДРАЗДЕЛЕНИЯ: {rec.Name}\n");
-                    rtbDatabaseInformation.AppendText($"ГОД: {rec.Year}\n");
-                    rtbDatabaseInformation.AppendText($"МЕСЯЦ: {rec.Month}\n");
-                    rtbDatabaseInformation.AppendText($"ДОХОД: {rec.Profit}\n");
-                    rtbDatabaseInformation.AppendText("--------------------------------------------------------\n");
-                }
+                rtbDatabaseInformation.AppendText($"ЗАПИСЬ №{i++}\n");
+                rtbDatabaseInformation.AppendText($"ID: {rec.ID}\n");
+                rtbDatabaseInformation.AppendText($"НАЗВАНИЕ ПОДРАЗДЕЛЕНИЯ: {rec.Name}\n");
+                rtbDatabaseInformation.AppendText($"ГОД: {rec.Year}\n");
+                rtbDatabaseInformation.AppendText($"МЕСЯЦ: {rec.Month}\n");
+                rtbDatabaseInformation.AppendText($"ДОХОД: {rec.Profit}\n");
+                rtbDatabaseInformation.AppendText("--------------------------------------------------------\n");
             }
         }
 
@@ -85,7 +82,7 @@ namespace PhoenixCorp
                 (int)numUDAddMonth.Value, (double)numUDAddProfit.Value);
 
             if (records.Exists(rec => rec.Name == tempRecord.Name &&
-                rec.Year == tempRecord.Year && rec.Month == tempRecord.Month && !rec.IsDeleted))
+                rec.Year == tempRecord.Year && rec.Month == tempRecord.Month))
             {
                 MessageBox.Show("Данная запись уже существует!", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
@@ -107,7 +104,7 @@ namespace PhoenixCorp
                         MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     return;
                 }
-                functions.AddRecord((int)numUDAddNumRec.Value, ref records, tempRecord, path);
+                functions.AddRecord((int)numUDAddNumRec.Value - 1, ref records, tempRecord, path);
             }
             ShowInfo(records);
         }
@@ -119,15 +116,15 @@ namespace PhoenixCorp
         /// <param name="e"></param>
         private void btnChangeRecord_Click(object sender, EventArgs e)
         {
-            if (tbAddDepName.Text == "")
+            if (tbChangeDepName.Text == "")
             {
                 MessageBox.Show("Введите данные в поле \"Название подразделения\"!", "Ошибка",
                     MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
 
-            Record tempRecord = new Record(tbAddDepName.Text, (int)numUDAddYear.Value,
-                (int)numUDAddMonth.Value, (double)numUDAddProfit.Value);
+            Record tempRecord = new Record(tbChangeDepName.Text, (int)numUDChangeYear.Value,
+                (int)numUDChangeMonth.Value, (double)numUDChangeProfit.Value);
 
             if (rbChangeNumRec.Checked)
             {
@@ -137,7 +134,7 @@ namespace PhoenixCorp
                         MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     return;
                 }
-                int index = (int)numUDChangeNumRec.Value;
+                int index = (int)numUDChangeNumRec.Value - 1;
                 functions.ChangeRecord(index, ref records, path, tempRecord);
             }
             else if (rbChangeID.Checked)
@@ -179,16 +176,16 @@ namespace PhoenixCorp
                         MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     return;
                 }
-                int index = (int)numUDRemoveNumRec.Value;
-                functions.RemoveRecord(index, ref records);
+                int index = (int)numUDRemoveNumRec.Value - 1;
+                functions.RemoveRecord(index, ref records, path);
                 functions.WriteRecord(records, path);
             }
             else if (rbRemoveID.Checked)
             {
-                if (records.Exists(rec => rec.ID == ulong.Parse(tbChangeID.Text)))
+                if (records.Exists(rec => rec.ID == ulong.Parse(tbRemoveID.Text)))
                 {
-                    int index = records.FindIndex(rec => rec.ID == ulong.Parse(tbChangeID.Text));
-                    functions.RemoveRecord(index, ref records);
+                    int index = records.FindIndex(rec => rec.ID == ulong.Parse(tbRemoveID.Text));
+                    functions.RemoveRecord(index, ref records, path);
                     functions.WriteRecord(records, path);
                 }
                 else
@@ -213,7 +210,7 @@ namespace PhoenixCorp
                 MessageBox.Show("Отсутствуют записи в БД!", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
-            FormEx formEx = new FormEx("Самые прибыльные годы", functions.GetMostYear(records));
+            FormEx formEx = new FormEx("Самые прибыльные годы", "Самые прибыльные годы подразделений:", functions.GetMostYear(records));
             formEx.ShowDialog();
         }
 
@@ -232,6 +229,7 @@ namespace PhoenixCorp
             double avg = 0;
             string[] result = functions.WorstPeriodsInfo(records, out avg);
             FormEx formEx = new FormEx("Длительные периоды спада", result, avg);
+            formEx.ShowDialog();
         }
 
         /// <summary>
@@ -246,7 +244,7 @@ namespace PhoenixCorp
                 MessageBox.Show("Отсутствуют записи в БД!", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
-            FormEx formEx = new FormEx("Самые худшие годы", functions.GetWorstYear(records));
+            FormEx formEx = new FormEx("Самые худшие годы", "Самые не прибыльные годы подразделений:", functions.GetWorstYear(records));
             formEx.ShowDialog();
         }
 
@@ -261,6 +259,8 @@ namespace PhoenixCorp
         /// <param name="e"></param>
         private void toolFileOpen_Click(object sender, EventArgs e)
         {
+            openFileDialog.InitialDirectory = path;
+            openFileDialog.Filter = "Binary files(*.bin)|*.bin|Text Files(*.txt)|*.txt|All files(*.*)|*.*";
             if (openFileDialog.ShowDialog() == DialogResult.Cancel)
                 // Отмена действия
                 return;
@@ -277,6 +277,8 @@ namespace PhoenixCorp
         /// <param name="e"></param>
         private void toolFileSave_Click(object sender, EventArgs e)
         {
+            saveFileDialog.InitialDirectory = path;
+            saveFileDialog.Filter = "Binary files(*.bin)|*.bin|Text Files(*.txt)|*.txt|All files(*.*)|*.*";
             if (saveFileDialog.ShowDialog() == DialogResult.Cancel)
                 // Отмена действия
                 return;
